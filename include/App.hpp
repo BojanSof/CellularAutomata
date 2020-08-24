@@ -10,8 +10,17 @@ namespace CA {
 class App {
 public:
     App();
-    App(int w, int h);
+    
+    App(unsigned int w, unsigned int h);
+
+    App(unsigned int w, unsigned int h, 
+        unsigned int rows, unsigned int columns);
+
+    App(unsigned int w, unsigned int h, 
+        unsigned int rows, unsigned int columns, 
+        unsigned int cw, unsigned int ch);
     ~App();
+
 
     bool isRunning() const;
     void reset();
@@ -20,11 +29,10 @@ public:
     void display();
 
 private:
-    int width, height;
+    unsigned int width, height;
     std::string title;
     sf::RenderWindow window;
     Grid grid;
-    sf::RectangleShape **rectCells;
     bool running;
 };
 

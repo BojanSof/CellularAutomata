@@ -1,47 +1,34 @@
 #include <Grid.hpp>
+#include <Common.hpp>
 
-CA::Grid::Grid(int w, int h) {
-    width = w;
-    height = h;
-    
-    cells = new Cell*[height];
-    for(int i = 0; i < height; i++)
-        cells[i] = new Cell[width];
-}
+CA::Grid::Grid() : Grid(GRID_ROWS, GRID_COLUMNS, CELL_WIDTH, CELL_HEIGHT) {}
 
-CA::Grid::Grid(int w, int h, bool initState) {
-    width = w;
-    height = h;
-    
-    cells = new Cell*[height];
-    for(int i = 0; i < height; i++) {
-        cells[i] = new Cell[width];
-        for(int j = 0; j < width; j++)
-            cells[i][j] = initState;
+CA::Grid::Grid(unsigned int r, unsigned int c) : Grid(r, c, CELL_WIDTH, CELL_HEIGHT) {}
+
+CA::Grid::Grid(unsigned int r, unsigned int c, unsigned int cw, unsigned int ch) : 
+                rows(r), columns(c),
+                cells(std::vector<std::vector<Cell>>(r)) {
+    for(unsigned int i = 0; i < rows; i++) {
+        for(unsigned int j = 0; j < columns; j++) {
+            Cell c(cw, ch);
+            c.setPosition(j * cw, i * ch);
+            cells[i].push_back(c);
+        }
     }
 }
 
-CA::Grid::~Grid() {
-    for(int i = 0; i < height; i++) {
-        delete[] cells[i];
-        cells[i] = nullptr;
-    }
-    delete[] cells;
-    cells = nullptr;
+unsigned int CA::Grid::getRows() const {
+    return rows;
 }
 
-int CA::Grid::getWidth() const {
-    return width;
-}
-
-int CA::Grid::getHeight() const {
-    return height;
+unsigned int CA::Grid::getColumns() const {
+    return columns;
 }
 
 const CA::Cell& CA::Grid::getCell(int r, int c) const {
     return cells[r][c];
 }
 
-void CA::Grid::setCellState(int r, int c, bool s) {
+void CA::Grid::setCellState(int r, int c, State s) {
     cells[r][c].setState(s);
 }

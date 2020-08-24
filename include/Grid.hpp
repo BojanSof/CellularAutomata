@@ -2,24 +2,25 @@
 #define GRID_HPP
 
 #include <Cell.hpp>
+#include <vector>
 
 namespace CA {
 
 class Grid {
 public:
-    Grid(int w, int h);
-    Grid(int w, int h, bool initState);
-    ~Grid();
+    Grid();
+    Grid(unsigned int r, unsigned int c);
+    Grid(unsigned int r, unsigned int c, unsigned int cw, unsigned int ch);
 
-    int getWidth() const;
-    int getHeight() const;
-    const Cell& getCell(int r, int c) const;
+    unsigned int getRows() const;
+    unsigned int getColumns() const;
+    const Cell& getCell(int row, int column) const;
 
-    void setCellState(int r, int c, bool s);
+    void setCellState(int r, int c, State s);
 
 private:
-    int width, height;
-    Cell **cells;
+    unsigned int rows, columns;
+    std::vector<std::vector<Cell>> cells;
 };
 
 }

@@ -2,45 +2,27 @@
 #include <Common.hpp>
 #include <iostream>
 
-CA::App::App() :    width(1000), height(100), title("CellularAutomata"),
-                    window(sf::VideoMode(width, height), title), 
-                    grid(width/cellWidth, height/cellHeight), 
-                    running(true) {
-    rectCells = new sf::RectangleShape*[height/cellHeight];
-    for(int i = 0; i < height/cellHeight; i++) {
-        rectCells[i] = new sf::RectangleShape[width/cellWidth];
-        for(int j = 0; j < width/cellWidth; j++) {
-            rectCells[i][j].setSize(sf::Vector2f(cellWidth, cellHeight));
-            rectCells[i][j].setPosition(j * cellWidth, i * cellHeight);
-        }
-    }
-    grid.setCellState(0, 3, true);
-    window.setFramerateLimit(60);
-}
+CA::App::App() : App(APP_WIDTH, APP_HEIGHT) {}
 
-CA::App::App(int w, int h) :
-                    width(w), height(h), title("CellularAutomata"),
-                    window(sf::VideoMode(width, height), title),
-                    grid(width/cellWidth, height/cellHeight),
-                    running(true) {
-    rectCells = new sf::RectangleShape*[height/cellHeight];
-    for(int i = 0; i < height/cellHeight; i++) {
-        rectCells[i] = new sf::RectangleShape[width/cellWidth];
-        for(int j = 0; j < width/cellWidth; j++) {
-            rectCells[i][j].setSize(sf::Vector2f(cellWidth, cellHeight));
-            rectCells[i][j].setPosition(j * cellWidth, i * cellHeight);
-        }
-    }
+CA::App::App(unsigned int w, unsigned int h) : 
+            App(w, h, GRID_ROWS, GRID_COLUMNS, CELL_WIDTH, CELL_HEIGHT) {}
+
+CA::App::App(   unsigned int w, unsigned int h, 
+                unsigned int rows, unsigned int columns
+            ) : App(w, h, rows, columns, w/columns, h/rows) {}
+
+CA::App::App(   unsigned int w, unsigned int h, 
+                unsigned int rows, unsigned int columns, 
+                unsigned int cw, unsigned int ch
+            ) : width(w), height(h), title("CellularAutomata"),
+                window(sf::VideoMode(width, height, 32), title),
+                grid(rows, columns, cw, ch),
+                running(true) {
     window.setFramerateLimit(60);
+    grid.setCellState(0, 4, CA::State::ON);
 }
 
 CA::App::~App() {
-    for(int i = 0; i < height/cellHeight; i++) {
-        delete[] rectCells[i];
-        rectCells[i] = nullptr;
-    }
-    delete[] rectCells;
-    rectCells = nullptr;
     window.close();
 }
 
@@ -80,12 +62,10 @@ void CA::App::handleEvents() {
 }
 
 void CA::App::update() {
-    window.clear();
-    for(int i = 0; i < grid.getHeight(); i++) {
-        for(int j = 0; j < grid.getWidth(); j++) {
-                std::cout << "cell(" << rectCells[i][j].getPosition().x << "," << rectCells[i][j].getPosition().y << ") state = " << (grid.getCell(i, j).getState()) << std::endl;
-                rectCells[i][j].setFillColor((grid.getCell(i, j).getState()) ? sf::Color::White : sf::Color::Black);
-                window.draw(rectCells[i][j]);
+    window.clear(sf::Color::Black);
+    for(int i = 0; i < grid.getRows(); i++) {
+        for(int j = 0; j < grid.getColumns(); j++) {
+            window.draw(grid.getCell(i, j));
         }
     }
 }
