@@ -2,6 +2,7 @@
 #define APP_HPP
 
 #include <Grid.hpp>
+#include <Elementary.hpp>
 #include <SFML/Graphics.hpp>
 #include <string>
 
@@ -34,8 +35,8 @@ private:
     unsigned int width, height;
     std::string title;
     sf::RenderWindow window;
-    Grid grid;
-    bool running;
+    CA::Elementary elementaryCA;
+    bool running, drawing;
 };
 
 }

@@ -6,7 +6,7 @@
 
 namespace CA {
 
-class Grid {
+class Grid {    
 public:
     Grid();
     Grid(unsigned int r, unsigned int c);
@@ -17,6 +17,9 @@ public:
     const Cell& getCell(int row, int column) const;
 
     void setCellState(int r, int c, CA::State s);
+
+    //test
+    void drawRow(sf::RenderWindow *window, unsigned int currentRow) const;
 
 private:
     unsigned int rows, columns;

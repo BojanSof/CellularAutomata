@@ -9,6 +9,7 @@ namespace CA {
     const unsigned int CELL_WIDTH = 100;
     const unsigned int CELL_HEIGHT = 100;
     const CA::State DEFAULT_STATE = CA::State("BLANK");
+    const unsigned char ELEMENTARY_DEFAULT_RULE = 90;
     const unsigned int GRID_ROWS = 10;
     const unsigned int GRID_COLUMNS = 10;
 

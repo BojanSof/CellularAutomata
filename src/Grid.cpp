@@ -33,3 +33,8 @@ const CA::Cell& CA::Grid::getCell(int r, int c) const {
 void CA::Grid::setCellState(int r, int c, CA::State s) {
     cells[r][c].setState(s);
 }
+
+void CA::Grid::drawRow(sf::RenderWindow *window, unsigned int currentRow) const {
+    for(unsigned int c = 0; c < columns; c++)
+        window->draw(cells[currentRow][c]);
+}

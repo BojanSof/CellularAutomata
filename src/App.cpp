@@ -16,12 +16,9 @@ CA::App::App(   unsigned int w, unsigned int h,
                 unsigned int cw, unsigned int ch
             ) : width(w), height(h), title("CellularAutomata"),
                 window(sf::VideoMode(width, height, 32), title),
-                grid(rows, columns, cw, ch),
-                running(true) {
+                elementaryCA(rows, columns, cw, ch, CA::Rule(99)),
+                running(true), drawing(true) {
     //window.setFramerateLimit(60);
-    for(unsigned int c = 0; c < grid.getColumns(); c++)
-        grid.setCellState(0, c, CA::State::OFF);
-    grid.setCellState(0, (grid.getColumns() - 1) / 2, CA::State::ON);
 }
 
 CA::App::~App() {
@@ -64,34 +61,16 @@ void CA::App::handleEvents() {
 }
 
 void CA::App::update(sf::Time elapsed) {
-    static unsigned int currentRow = 1;
+    //for(unsigned int r = 0; r < elementaryCA.getGrid().getRows(); r++)
+    //    elementaryCA.getGrid().drawRow(&window, r);
     window.clear(sf::Color::Black);
-    for(int i = 0; i < grid.getRows(); i++) {
-        for(int j = 0; j < grid.getColumns(); j++) {
-            window.draw(grid.getCell(i, j));
+    unsigned int currentRow = elementaryCA.getNextRow() - 1;
+    for(unsigned int r = 0; r < elementaryCA.getGrid().getRows(); r++) {
+        for(unsigned int c = 0; c < elementaryCA.getGrid().getColumns(); c++) {
+            window.draw(elementaryCA.getGrid().getCell(r, c));
         }
     }
-    if(currentRow >= grid.getRows()) return;
-    for(unsigned int column = 1; column < grid.getColumns() - 1; column++) {
-        if(
-            grid.getCell(currentRow - 1, column - 1).getState() == CA::State::OFF &&
-            grid.getCell(currentRow - 1, column + 1).getState() == CA::State::OFF
-        ) grid.setCellState(currentRow, column, CA::State::OFF);
-        else if(
-            grid.getCell(currentRow - 1, column - 1).getState() == CA::State::OFF &&
-            grid.getCell(currentRow - 1, column + 1).getState() == CA::State::ON
-        ) grid.setCellState(currentRow, column, CA::State::ON);
-        else if(
-            grid.getCell(currentRow - 1, column - 1).getState() == CA::State::ON &&
-            grid.getCell(currentRow - 1, column + 1).getState() == CA::State::OFF
-        ) grid.setCellState(currentRow, column, CA::State::ON);
-        else if(
-            grid.getCell(currentRow - 1, column - 1).getState() == CA::State::ON &&
-            grid.getCell(currentRow - 1, column + 1).getState() == CA::State::ON
-        ) grid.setCellState(currentRow, column, CA::State::OFF);
-        else grid.setCellState(currentRow, column, CA::State::OFF);
-    }
-    currentRow += 1;
+    drawing = elementaryCA.update();
 }
 
 void CA::App::display() {
@@ -104,12 +83,12 @@ void CA::App::run() {
     sf::Time timeSinceLastUpdate = sf::Time::Zero;
     sf::Time timePerFrame = sf::seconds(1 / CA::FPS);
     while(isRunning()) {
-        timeSinceLastUpdate += clock.restart();
-        while(timeSinceLastUpdate > timePerFrame) {
-            timeSinceLastUpdate -= timePerFrame;
+        //timeSinceLastUpdate += clock.restart();
+        //while(timeSinceLastUpdate > timePerFrame) {
+        //    timeSinceLastUpdate -= timePerFrame;
             handleEvents();
             update(timePerFrame);
-        }
+        //}
         display();
     }
 }

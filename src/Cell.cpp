@@ -11,7 +11,7 @@ CA::Cell::Cell(const CA::State &s, unsigned int w, unsigned int h) :
                             width(w), height(h),
                             rect(sf::Vector2f(w, h)) {
     rect.setOutlineColor(sf::Color::White);
-    rect.setOutlineThickness(1);
+    rect.setOutlineThickness(0);
     setState(s);
 }
 
@@ -29,8 +29,8 @@ unsigned int CA::Cell::getHeight() const {
 
 void CA::Cell::setState(const CA::State &s) {
     state = s;
-    if(state == CA::State::ON) setColor(sf::Color::Blue);
-    else if(state == CA::State::OFF) setColor(sf::Color::Red);
+    if(state == CA::State::ON) setColor(sf::Color(255, 210, 0));
+    else if(state == CA::State::OFF) setColor(sf::Color(0, 71, 133));
     else setColor(sf::Color::Black);
 }
 
