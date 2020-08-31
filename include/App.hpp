@@ -25,8 +25,10 @@ public:
     bool isRunning() const;
     void reset();
     void handleEvents();
-    void update();
+    void update(sf::Time elapsed);
     void display();
+
+    void run();
 
 private:
     unsigned int width, height;

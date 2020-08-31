@@ -1,18 +1,23 @@
 #ifndef STATE_HPP
 #define STATE_HPP
 
+#include <string>
+
 namespace CA {
 
 class State {
 public:
    State();
-   State(int v);
+   State(std::string v);
+   State(const char *v);
    bool operator==(const State &s);
+
+   const std::string &getValue() const { return value; }
 
    static const State OFF;
    static const State ON;
 private:
-   int value;
+   std::string value;
 };
 
 }

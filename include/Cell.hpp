@@ -9,15 +9,15 @@ namespace CA {
 class Cell : public sf::Drawable {
 public:
     Cell();
-    Cell(State s);
+    Cell(const CA::State &s);
     Cell(unsigned int w, unsigned int h);
-    Cell(State s, unsigned int w, unsigned int h);
+    Cell(const CA::State &s, unsigned int w, unsigned int h);
     
-    State getState() const;
+    CA::State getState() const;
     unsigned int getWidth() const;
     unsigned int getHeight() const;
     
-    void setState(State s);
+    void setState(const CA::State &s);
     void setWidth(unsigned int w);
     void setHeight(unsigned int h);
 
@@ -25,10 +25,10 @@ public:
 
     void setPosition(float x, float y);
     sf::Vector2f getPosition() const;
-    void setColor(sf::Color color);
+    void setColor(const sf::Color &color);
 
 private:
-    State state;
+    CA::State state;
     unsigned int width, height;
     sf::RectangleShape rect;
 };

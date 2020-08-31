@@ -3,13 +3,15 @@
 
 CA::Cell::Cell() : Cell(DEFAULT_STATE, CELL_WIDTH, CELL_HEIGHT) {}
 
-CA::Cell::Cell(State s) : Cell(s, CELL_WIDTH, CELL_HEIGHT) {}
+CA::Cell::Cell(const CA::State &s) : Cell(s, CELL_WIDTH, CELL_HEIGHT) {}
 
 CA::Cell::Cell(unsigned int w, unsigned int h) : Cell(DEFAULT_STATE, w, h) {}
 
-CA::Cell::Cell(State s, unsigned int w, unsigned int h) :
+CA::Cell::Cell(const CA::State &s, unsigned int w, unsigned int h) :
                             width(w), height(h),
                             rect(sf::Vector2f(w, h)) {
+    rect.setOutlineColor(sf::Color::White);
+    rect.setOutlineThickness(1);
     setState(s);
 }
 
@@ -25,11 +27,11 @@ unsigned int CA::Cell::getHeight() const {
     return height;
 }
 
-void CA::Cell::setState(CA::State s) {
+void CA::Cell::setState(const CA::State &s) {
     state = s;
-    if(state == CA::State::ON) setColor(sf::Color::White);
-    else if(state == CA::State::OFF) setColor(sf::Color::Black);
-    else setColor(sf::Color::Green);
+    if(state == CA::State::ON) setColor(sf::Color::Blue);
+    else if(state == CA::State::OFF) setColor(sf::Color::Red);
+    else setColor(sf::Color::Black);
 }
 
 void CA::Cell::setWidth(unsigned int w) {
@@ -52,6 +54,6 @@ sf::Vector2f CA::Cell::getPosition() const {
     return rect.getPosition();
 }
 
-void CA::Cell::setColor(sf::Color color) {
+void CA::Cell::setColor(const sf::Color &color) {
     rect.setFillColor(color);
 }

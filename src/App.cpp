@@ -18,8 +18,10 @@ CA::App::App(   unsigned int w, unsigned int h,
                 window(sf::VideoMode(width, height, 32), title),
                 grid(rows, columns, cw, ch),
                 running(true) {
-    window.setFramerateLimit(60);
-    grid.setCellState(0, 4, CA::State::ON);
+    //window.setFramerateLimit(60);
+    for(unsigned int c = 0; c < grid.getColumns(); c++)
+        grid.setCellState(0, c, CA::State::OFF);
+    grid.setCellState(0, (grid.getColumns() - 1) / 2, CA::State::ON);
 }
 
 CA::App::~App() {
@@ -61,15 +63,53 @@ void CA::App::handleEvents() {
     }
 }
 
-void CA::App::update() {
+void CA::App::update(sf::Time elapsed) {
+    static unsigned int currentRow = 1;
     window.clear(sf::Color::Black);
     for(int i = 0; i < grid.getRows(); i++) {
         for(int j = 0; j < grid.getColumns(); j++) {
             window.draw(grid.getCell(i, j));
         }
     }
+    if(currentRow >= grid.getRows()) return;
+    for(unsigned int column = 1; column < grid.getColumns() - 1; column++) {
+        if(
+            grid.getCell(currentRow - 1, column - 1).getState() == CA::State::OFF &&
+            grid.getCell(currentRow - 1, column + 1).getState() == CA::State::OFF
+        ) grid.setCellState(currentRow, column, CA::State::OFF);
+        else if(
+            grid.getCell(currentRow - 1, column - 1).getState() == CA::State::OFF &&
+            grid.getCell(currentRow - 1, column + 1).getState() == CA::State::ON
+        ) grid.setCellState(currentRow, column, CA::State::ON);
+        else if(
+            grid.getCell(currentRow - 1, column - 1).getState() == CA::State::ON &&
+            grid.getCell(currentRow - 1, column + 1).getState() == CA::State::OFF
+        ) grid.setCellState(currentRow, column, CA::State::ON);
+        else if(
+            grid.getCell(currentRow - 1, column - 1).getState() == CA::State::ON &&
+            grid.getCell(currentRow - 1, column + 1).getState() == CA::State::ON
+        ) grid.setCellState(currentRow, column, CA::State::OFF);
+        else grid.setCellState(currentRow, column, CA::State::OFF);
+    }
+    currentRow += 1;
 }
 
 void CA::App::display() {
     window.display();
+}
+
+void CA::App::run() {
+
+    sf::Clock clock;
+    sf::Time timeSinceLastUpdate = sf::Time::Zero;
+    sf::Time timePerFrame = sf::seconds(1 / CA::FPS);
+    while(isRunning()) {
+        timeSinceLastUpdate += clock.restart();
+        while(timeSinceLastUpdate > timePerFrame) {
+            timeSinceLastUpdate -= timePerFrame;
+            handleEvents();
+            update(timePerFrame);
+        }
+        display();
+    }
 }

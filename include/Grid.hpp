@@ -16,7 +16,7 @@ public:
     unsigned int getColumns() const;
     const Cell& getCell(int row, int column) const;
 
-    void setCellState(int r, int c, State s);
+    void setCellState(int r, int c, CA::State s);
 
 private:
     unsigned int rows, columns;

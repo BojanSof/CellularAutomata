@@ -1,6 +1,6 @@
 # Ignore the build and lib dirs
 .vscode/*
-build
+build/*
 lib/*
 
 # Ignore any executables
