@@ -2,26 +2,30 @@
 #define ELEMENTARY_HPP
 
 #include <Grid.hpp>
-#include <Rule.hpp>
+#include <ElementaryRule.hpp>
 
 namespace CA {
 
 class Elementary {
 public:
     Elementary();
-    Elementary(unsigned int r, unsigned int c);
-    Elementary( unsigned int r, unsigned int c,
-                unsigned int cw, unsigned int ch );
-    Elementary( unsigned int r, unsigned int c,
-                unsigned int cw, unsigned int ch ,
-                const CA::Rule &ru);
+    Elementary(std::size_t rows, std::size_t columns);
+    Elementary( std::size_t rows, std::size_t columns,
+                std::size_t cw, std::size_t ch );
+    Elementary( std::size_t rows, std::size_t columns,
+                std::size_t cw, std::size_t ch ,
+                const CA::ElementaryRule &ru);
     const CA::Grid &getGrid() const;
-    unsigned int getNextRow() const;
+    std::size_t getNextRow() const;
     bool update(); //returns false if no change is made
+public:
+    static const CA::State STATE_BLANK;
+    static const CA::State STATE_OFF;
+    static const CA::State STATE_ON;
 private:
     CA::Grid grid;
-    unsigned int nextRow;
-    CA::Rule rule;
+    std::size_t nextRow;
+    CA::ElementaryRule rule;
 };
 
 }

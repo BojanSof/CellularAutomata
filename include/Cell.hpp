@@ -10,26 +10,29 @@ class Cell : public sf::Drawable {
 public:
     Cell();
     Cell(const CA::State &s);
-    Cell(unsigned int w, unsigned int h);
-    Cell(const CA::State &s, unsigned int w, unsigned int h);
+    Cell(float w, float h);
+    Cell(const CA::State &s, float w, float h);
     
-    CA::State getState() const;
-    unsigned int getWidth() const;
-    unsigned int getHeight() const;
-    
-    void setState(const CA::State &s);
-    void setWidth(unsigned int w);
-    void setHeight(unsigned int h);
-
     void draw(sf::RenderTarget& target, sf::RenderStates states) const;
 
+    const CA::State &getState() const;
+    float getWidth() const;
+    float getHeight() const;
+    const sf::Vector2f &getPosition() const;
+    const sf::Vector2f &getSize() const;
+
+    void setState(const CA::State &s);
+    void setWidth(float w);
+    void setHeight(float h);
     void setPosition(float x, float y);
-    sf::Vector2f getPosition() const;
+    void setSize(float w, float h);
     void setColor(const sf::Color &color);
+    void setOutlineColor(const sf::Color &color);
+    void setOutlineThickness(float t);
+    void setStateColor(const CA::State &s, const sf::Color &c);
 
 private:
     CA::State state;
-    unsigned int width, height;
     sf::RectangleShape rect;
 };
 

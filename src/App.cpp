@@ -16,7 +16,7 @@ CA::App::App(   unsigned int w, unsigned int h,
                 unsigned int cw, unsigned int ch
             ) : width(w), height(h), title("CellularAutomata"),
                 window(sf::VideoMode(width, height, 32), title),
-                elementaryCA(rows, columns, cw, ch, CA::Rule(99)),
+                elementaryCA(rows, columns, cw, ch, CA::ElementaryRule(99)),
                 running(true), drawing(true) {
     //window.setFramerateLimit(60);
 }

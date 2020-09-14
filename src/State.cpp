@@ -4,9 +4,10 @@ CA::State::State() : value() {}
 CA::State::State(std::string v) : value(v) {}
 CA::State::State(const char *v) : value(v) {}
 
-bool CA::State::operator==(const State &s) {
+bool CA::State::operator==(const CA::State &s) const{
     return (value == s.value);
 }
 
-const CA::State CA::State::OFF = CA::State("OFF");
-const CA::State CA::State::ON = CA::State("ON");
+bool CA::StateCompare::operator() (const State &s1, const State &s2) const {
+       return s1.getValue() < s2.getValue();
+}
