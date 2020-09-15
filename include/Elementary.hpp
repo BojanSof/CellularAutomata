@@ -1,31 +1,29 @@
 #ifndef ELEMENTARY_HPP
 #define ELEMENTARY_HPP
 
-#include <Grid.hpp>
+#include <CellularAutomaton.hpp>
 #include <ElementaryRule.hpp>
 
 namespace CA {
 
-class Elementary {
+class Elementary : public CA::CellularAutomaton {
 public:
     Elementary();
     Elementary(std::size_t rows, std::size_t columns);
     Elementary( std::size_t rows, std::size_t columns,
-                std::size_t cw, std::size_t ch );
+                float cw, float ch );
     Elementary( std::size_t rows, std::size_t columns,
-                std::size_t cw, std::size_t ch ,
+                float cw, float ch ,
                 const CA::ElementaryRule &ru);
-    const CA::Grid &getGrid() const;
+    bool update() override;
+    void reset() override;
     std::size_t getNextRow() const;
-    bool update(); //returns false if no change is made
 public:
     static const CA::State STATE_BLANK;
     static const CA::State STATE_OFF;
     static const CA::State STATE_ON;
 private:
-    CA::Grid grid;
     std::size_t nextRow;
-    CA::ElementaryRule rule;
 };
 
 }

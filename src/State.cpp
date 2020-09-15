@@ -4,7 +4,7 @@ CA::State::State() : value() {}
 CA::State::State(std::string v) : value(v) {}
 CA::State::State(const char *v) : value(v) {}
 
-bool CA::State::operator==(const CA::State &s) const{
+bool CA::State::operator==(const CA::State &s) const {
     return (value == s.value);
 }
 
