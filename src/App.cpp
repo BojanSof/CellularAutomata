@@ -1,6 +1,7 @@
 #include <App.hpp>
 #include <Common.hpp>
 #include <iostream>
+#include <iomanip>
 
 CA::App::App() : App(APP_WIDTH, APP_HEIGHT) {}
 
@@ -9,13 +10,14 @@ CA::App::App(unsigned int w, unsigned int h) :
 
 CA::App::App(   unsigned int w, unsigned int h, 
                 std::size_t r, std::size_t c
-            ) : App(w, h, rows, columns, w/columns, h/rows) {}
+            ) : App(w, h, r, c, w/c, h/r) {}
 
 CA::App::App(   unsigned int w, unsigned int h, 
                 std::size_t r, std::size_t c, 
                 float cw, float ch
-            ) : width(w), height(h), rows(r), columns(c),
-                cellWidth(cw), cellHeight(ch),                
+            ) : config(w, h, r, c, cw, ch)
+                /*width(w), height(h), rows(r), columns(c),
+                cellWidth(cw), cellHeight(ch)*/,                
                 title("Cellular Automata"),
                 running(false) {
     std::cout << "Welcome to Cellular Automation collection!!!\n";
@@ -35,6 +37,24 @@ int CA::App::menu() {
     int input;
     std::cin >> input;
     if(input < 1 && input > 3) {
+        std::cout << "Incorrect option. Please choose a valid entry" << std::endl;
+        return -1;
+    } else return input;
+}
+
+int CA::App::options() {
+    std::cout << std::setw(4) << std::fixed << std::setprecision(1);
+    std::cout << "1. Change App Width               (current width:       " << config.getWidth() << ")\n";
+    std::cout << "2. Change App Height              (current height:      " << config.getHeight() << ")\n";
+    std::cout << "3. Change number of grid's rows   (current rows:        " << config.getRows() << ")\n";
+    std::cout << "4. Change number of grid's columns(current columns:     " << config.getColumns() << ")\n";
+    std::cout << "5. Change cell width              (current cell width:  " << config.getCellWidth() << ")\n";
+    std::cout << "6. Change cell height             (current cell height: " << config.getCellHeight() << ")\n";
+    std::cout << "7. Back\n";
+    std::cout << "Your choice: " << std::flush;
+    int input;
+    std::cin >> input;
+    if(input < 1 && input > 7) {
         std::cout << "Incorrect option. Please choose a valid entry" << std::endl;
         return -1;
     } else return input;
@@ -95,15 +115,68 @@ void CA::App::run() {
     int choice;
     do {
         choice = menu();
-    } while(choice == -1);
+        if(choice == 2) {
+            int optionsChoice;
+            do {
+                do {
+                    optionsChoice = options();
+                } while(optionsChoice == -1);
+                switch(optionsChoice) {
+                case 1: {
+                    unsigned int w;
+                    std::cout << "Enter the new width: ";
+                    std::cin >> w;
+                    config.setWidth(w);
+                } break;
+                case 2: {
+                    unsigned int h;
+                    std::cout << "Enter the new height: ";
+                    std::cin >> h;
+                    config.setHeight(h);
+                } break;
+                case 3: {
+                    std::size_t r;
+                    std::cout << "Enter the new number of rows: ";
+                    std::cin >> r;
+                    config.setRows(r);
+                } break;
+                case 4: {
+                    std::size_t c;
+                    std::cout << "Enter the new number of columns: ";
+                    std::cin >> c;
+                    config.setColumns(c);
+                } break;
+                case 5: {
+                    float cw;
+                    std::cout << "Enter the new cells' width: ";
+                    std::cin >> cw;
+                    config.setCellWidth(cw);
+                } break;
+                case 6: {
+                    float ch;
+                    std::cout << "Enter the new cells' height: ";
+                    std::cin >> ch;
+                    config.setCellHeight(ch);
+                } break;
+                case 7:
+                    optionsChoice = -1;
+                break;
+                default:
+                break;
+            }
+            } while(optionsChoice != -1);
+        }
+    } while(choice == -1 || choice == 2);
     switch(choice) {
-        case 1: //Elementary CA
-            ca = std::make_shared<CA::Elementary>(CA::Elementary(rows, columns, cellWidth, cellHeight, CA::ElementaryRule(99)));
+        case 1: { //Elementary CA
+            int numberRule, c;
+            std::cout << "Enter the number representing the rule: ";
+            std::cin >> numberRule;
+            std::cout << "Enter the first row initial states configuration: ";
+            std::cin >> c;
+            ca = std::make_shared<CA::Elementary>(CA::Elementary(config.getRows(), config.getColumns(), config.getCellWidth(), config.getCellHeight(), CA::ElementaryRule(numberRule), c));
             running = true;
-        break;
-        case 2: //options (empty for now)
-            return;
-        break;
+        } break;
         case 3:
             return;
         break;
@@ -112,7 +185,7 @@ void CA::App::run() {
     //sf::Time timeSinceLastUpdate = sf::Time::Zero;
     //sf::Time timePerFrame = sf::seconds(1 / CA::FPS);
     ca->reset();
-    window.create(sf::VideoMode(width, height, 32), title);
+    window.create(sf::VideoMode(config.getWidth(), config.getHeight(), 32), title);
     while(isRunning()) {
         //timeSinceLastUpdate += clock.restart();
         //while(timeSinceLastUpdate > timePerFrame) {

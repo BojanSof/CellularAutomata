@@ -27,6 +27,11 @@ public:
     void setColumns(std::size_t c);
     void setCellWidth(float cw);
     void setCellHeight(float ch);
+    void set(
+                unsigned int w, unsigned int h,
+                std::size_t r, std::size_t c,
+                float cw, float ch
+            );
 private:
     unsigned int width, height;
     std::size_t rows, columns;

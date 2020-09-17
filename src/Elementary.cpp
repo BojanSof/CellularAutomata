@@ -1,6 +1,5 @@
 #include <Elementary.hpp>
 #include <Common.hpp>
-#include <ctime>
 #include <cstdlib>
 
 const CA::State CA::Elementary::STATE_BLANK("BLANK");
@@ -14,24 +13,19 @@ CA::Elementary::Elementary(std::size_t r, std::size_t c) : Elementary(r, c, CELL
 CA::Elementary::Elementary( 
                             std::size_t r, std::size_t c,
                             float cw, float ch
-                        ) : Elementary(r, c, cw, ch, CA::ElementaryRule()) {
+                        ) : Elementary(r, c, cw, ch, CA::ElementaryRule(), 2) {
 }
 
 CA::Elementary::Elementary( 
                             std::size_t r, std::size_t c,
                             float cw, float ch,
-                            const CA::ElementaryRule &ru
-                        ) : CellularAutomaton(r, c, cw, ch), nextRow(1) {
+                            const CA::ElementaryRule &ru, int frc
+                        ) : CellularAutomaton(r, c, cw, ch), nextRow(1), firstRowConfig(frc) {
     rule = std::make_shared<CA::ElementaryRule>(ru);
     //initialize coloring rules
     rule->addColoringRule(STATE_BLANK, sf::Color::Black);
     rule->addColoringRule(STATE_OFF, sf::Color(0, 71, 133));
     rule->addColoringRule(STATE_ON, sf::Color(255, 210, 0));
-
-    //initialize first row
-    for(std::size_t c = 0; c < grid.getColumns(); c++)
-        grid.setCellState(0, c, STATE_OFF, rule->getColor(STATE_OFF));
-    grid.setCellState(0, grid.getColumns() / 2, STATE_ON, rule->getColor(STATE_ON));
 }
 
 bool CA::Elementary::update() {
@@ -58,12 +52,29 @@ void CA::Elementary::reset() {
             grid.setCellState(i, j, STATE_BLANK, rule->getColor(STATE_BLANK));
         }
     }
-    for(std::size_t c = 0; c < grid.getColumns(); c++)
-        grid.setCellState(0, c, STATE_OFF, rule->getColor(STATE_OFF));
-    grid.setCellState(0, grid.getColumns() / 2, STATE_ON, rule->getColor(STATE_ON));
+    initFirstRow(firstRowConfig);
     nextRow = 1;
 }
 
 std::size_t CA::Elementary::getNextRow() const {
     return nextRow;
+}
+
+void CA::Elementary::initFirstRow(int c) {
+    if(c == 0) {
+        for(std::size_t c = 0; c < grid.getColumns(); c++)
+            grid.setCellState(0, c, STATE_OFF, rule->getColor(STATE_OFF));
+    } else if(c == 1) {
+        for(std::size_t c = 0; c < grid.getColumns(); c++)
+            grid.setCellState(0, c, STATE_ON, rule->getColor(STATE_ON));
+    } else if(c == 2) {
+        for(std::size_t c = 0; c < grid.getColumns(); c++)
+            grid.setCellState(0, c, STATE_OFF, rule->getColor(STATE_OFF));
+        grid.setCellState(0, grid.getColumns() / 2, STATE_ON, rule->getColor(STATE_ON));
+    } else {
+        for(std::size_t c = 0; c < grid.getColumns(); c++) {
+            const CA::State &state = (rng.randUInt(1,1000) > 500) ? STATE_ON : STATE_OFF;
+            grid.setCellState(0, c, state, rule->getColor(state));
+        }
+    }
 }

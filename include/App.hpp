@@ -1,7 +1,7 @@
 #ifndef APP_HPP
 #define APP_HPP
 
-#include <Grid.hpp>
+#include <Configuration.hpp>
 #include <Elementary.hpp>
 #include <SFML/Graphics.hpp>
 #include <string>
@@ -24,6 +24,7 @@ public:
     ~App();
 
     int menu();
+    int options();
     bool isRunning() const;
     void reset();
     void handleEvents();
@@ -33,9 +34,10 @@ public:
     void run();
 
 private:
-    unsigned int width, height;
-    std::size_t rows, columns;
-    float cellWidth, cellHeight;
+    //unsigned int width, height;
+    //std::size_t rows, columns;
+    //float cellWidth, cellHeight;
+    CA::Configuration config;
     std::string title;
     sf::RenderWindow window;
     std::shared_ptr<CA::CellularAutomaton> ca;

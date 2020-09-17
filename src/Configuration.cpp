@@ -54,3 +54,16 @@ void CA::Configuration::setCellWidth(float cw) {
 void CA::Configuration::setCellHeight(float ch) {
     cellHeight = ch;
 }
+
+void CA::Configuration::set(
+                            unsigned int w, unsigned int h,
+                            std::size_t r, std::size_t c,
+                            float cw, float ch
+                        ) {
+    width = w;
+    height = h;
+    rows = r;
+    columns = c;
+    cellWidth = cw;
+    cellHeight = ch;
+}
