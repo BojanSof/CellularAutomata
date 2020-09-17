@@ -28,6 +28,8 @@ CA::Elementary::Elementary(
     rule->addColoringRule(STATE_ON, sf::Color(255, 210, 0));
 }
 
+//update without scrolling
+/*
 bool CA::Elementary::update() {
     if(nextRow >= grid.getRows()) return false;
 
@@ -42,6 +44,55 @@ bool CA::Elementary::update() {
     }
     grid.setCellState(nextRow, 0, STATE_OFF, rule->getColor(STATE_OFF));
     grid.setCellState(nextRow, grid.getColumns() - 1, STATE_ON, rule->getColor(STATE_ON));
+    nextRow += 1;
+    return true;
+}
+*/
+
+//update with scrolling
+bool CA::Elementary::update() {
+    if(nextRow >= grid.getRows()) {
+        for(std::size_t r = 0; r < grid.getRows() - 1; r++) {
+            for(std::size_t c = 0; c < grid.getColumns(); c++) {
+                const CA::State &state = grid.getCell(r + 1,c).getState();
+                grid.setCellState(r, c, state, rule->getColor(state));
+            }
+        }
+        nextRow--;
+    }
+
+    for(std::size_t column = 1; column < grid.getColumns() - 1; column++) {
+        const CA::Cell &left = grid.getCell(nextRow - 1, column - 1);
+        const CA::Cell &center = grid.getCell(nextRow - 1, column);
+        const CA::Cell &right = grid.getCell(nextRow - 1, column + 1);
+        CA::State newState = rule->getNewState(left, center, right);
+        grid.setCellState(  nextRow, column, 
+                            newState,
+                            rule->getColor(newState));
+    }
+
+    //edge cells
+    //leftmost cell
+    {
+        const CA::Cell &left = grid.getCell(nextRow - 1, grid.getColumns() - 1);
+        const CA::Cell &center = grid.getCell(nextRow - 1, 0);
+        const CA::Cell &right = grid.getCell(nextRow - 1, 1);
+        CA::State newState = rule->getNewState(left, center, right);
+        grid.setCellState(  nextRow, 0, 
+                            newState,
+                            rule->getColor(newState));
+    }
+    
+    //rightmost
+    {
+        const CA::Cell &left = grid.getCell(nextRow - 1, grid.getColumns() - 2);
+        const CA::Cell &center = grid.getCell(nextRow - 1, grid.getColumns() - 1);
+        const CA::Cell &right = grid.getCell(nextRow - 1, 0);
+        CA::State newState = rule->getNewState(left, center, right);
+        grid.setCellState(  nextRow, grid.getColumns() - 1, 
+                            newState,
+                            rule->getColor(newState));
+    }
     nextRow += 1;
     return true;
 }
