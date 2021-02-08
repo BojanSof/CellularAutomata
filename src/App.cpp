@@ -31,12 +31,13 @@ CA::App::~App() {
 
 int CA::App::menu() {
     std::cout << "1. Elementary CA\n";
-    std::cout << "2. Options\n";
-    std::cout << "3. Exit\n";
+    std::cout << "2. Conway's Game of Life\n";
+    std::cout << "3. Options\n";
+    std::cout << "4. Exit\n";
     std::cout << "Your choice: " << std::flush;
     int input;
     std::cin >> input;
-    if(input < 1 && input > 3) {
+    if(input < 1 && input > 4) {
         std::cout << "Incorrect option. Please choose a valid entry" << std::endl;
         return -1;
     } else return input;
@@ -115,7 +116,7 @@ void CA::App::run() {
     int choice;
     do {
         choice = menu();
-        if(choice == 2) {
+        if(choice == 3) {
             int optionsChoice;
             do {
                 do {
@@ -166,7 +167,7 @@ void CA::App::run() {
             }
             } while(optionsChoice != -1);
         }
-    } while(choice == -1 || choice == 2);
+    } while(choice == -1 || choice == 3);
     switch(choice) {
         case 1: { //Elementary CA
             int numberRule, c;
@@ -177,7 +178,11 @@ void CA::App::run() {
             ca = std::make_shared<CA::Elementary>(CA::Elementary(config.getRows(), config.getColumns(), config.getCellWidth(), config.getCellHeight(), CA::ElementaryRule(numberRule), c));
             running = true;
         } break;
-        case 3:
+        case 2: { //Conway's Game of Life
+            ca = std::make_shared<CA::GameOfLife>(CA::GameOfLife(config.getRows(), config.getColumns(), config.getCellWidth(), config.getCellHeight()));
+            running = true;
+        } break;
+        case 4:
             return;
         break;
     }
