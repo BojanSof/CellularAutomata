@@ -32,8 +32,9 @@ CA::App::~App() {
 int CA::App::menu() {
     std::cout << "1. Elementary CA\n";
     std::cout << "2. Conway's Game of Life\n";
-    std::cout << "3. Options\n";
-    std::cout << "4. Exit\n";
+    std::cout << "3. Langton's Ant\n";
+    std::cout << "4. Options\n";
+    std::cout << "5. Exit\n";
     std::cout << "Your choice: " << std::flush;
     int input;
     std::cin >> input;
@@ -116,7 +117,7 @@ void CA::App::run() {
     int choice;
     do {
         choice = menu();
-        if(choice == 3) {
+        if(choice == 4) {
             int optionsChoice;
             do {
                 do {
@@ -167,7 +168,7 @@ void CA::App::run() {
             }
             } while(optionsChoice != -1);
         }
-    } while(choice == -1 || choice == 3);
+    } while(choice == -1 || choice == 4);
     switch(choice) {
         case 1: { //Elementary CA
             int numberRule, c;
@@ -182,7 +183,11 @@ void CA::App::run() {
             ca = std::make_shared<CA::GameOfLife>(CA::GameOfLife(config.getRows(), config.getColumns(), config.getCellWidth(), config.getCellHeight()));
             running = true;
         } break;
-        case 4:
+        case 3: { //Langton's Ant
+            ca = std::make_shared<CA::LangtonAnt>(CA::LangtonAnt(config.getRows(), config.getColumns(), config.getCellWidth(), config.getCellHeight()));
+            running = true;
+        } break;
+        case 5:
             return;
         break;
     }

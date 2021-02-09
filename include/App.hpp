@@ -4,6 +4,7 @@
 #include <Configuration.hpp>
 #include <Elementary.hpp>
 #include <GameOfLife.hpp>
+#include <LangtonAnt.hpp>
 #include <SFML/Graphics.hpp>
 #include <string>
 #include <memory>
