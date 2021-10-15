@@ -33,12 +33,13 @@ int CA::App::menu() {
     std::cout << "1. Elementary CA\n";
     std::cout << "2. Conway's Game of Life\n";
     std::cout << "3. Langton's Ant\n";
-    std::cout << "4. Options\n";
-    std::cout << "5. Exit\n";
+    std::cout << "4. Brians's Brain\n";
+    std::cout << "5. Options\n";
+    std::cout << "6. Exit\n";
     std::cout << "Your choice: " << std::flush;
     int input;
     std::cin >> input;
-    if(input < 1 && input > 4) {
+    if(input < 1 && input > 6) {
         std::cout << "Incorrect option. Please choose a valid entry" << std::endl;
         return -1;
     } else return input;
@@ -117,7 +118,7 @@ void CA::App::run() {
     int choice;
     do {
         choice = menu();
-        if(choice == 4) {
+        if(choice == CA::App::OPTIONS_MENU_ENTRY) {
             int optionsChoice;
             do {
                 do {
@@ -168,9 +169,9 @@ void CA::App::run() {
             }
             } while(optionsChoice != -1);
         }
-    } while(choice == -1 || choice == 4);
+    } while(choice == -1 || choice == OPTIONS_MENU_ENTRY);
     switch(choice) {
-        case 1: { //Elementary CA
+        case CA::App::ELEMENTARY_MENU_ENTRY: { //Elementary CA
             int numberRule, c;
             std::cout << "Enter the number representing the rule: ";
             std::cin >> numberRule;
@@ -179,15 +180,19 @@ void CA::App::run() {
             ca = std::make_shared<CA::Elementary>(CA::Elementary(config.getRows(), config.getColumns(), config.getCellWidth(), config.getCellHeight(), CA::ElementaryRule(numberRule), c));
             running = true;
         } break;
-        case 2: { //Conway's Game of Life
+        case CA::App::GAME_OF_LIFE_MENU_ENTRY: { //Conway's Game of Life
             ca = std::make_shared<CA::GameOfLife>(CA::GameOfLife(config.getRows(), config.getColumns(), config.getCellWidth(), config.getCellHeight()));
             running = true;
         } break;
-        case 3: { //Langton's Ant
+        case CA::App::LANGTONS_ANT_MENU_ENTRY: { //Langton's Ant
             ca = std::make_shared<CA::LangtonAnt>(CA::LangtonAnt(config.getRows(), config.getColumns(), config.getCellWidth(), config.getCellHeight()));
             running = true;
         } break;
-        case 5:
+        case CA::App::BRIANS_BRAIN_MENU_ENTRY: { //Conway's Game of Life
+            ca = std::make_shared<CA::BriansBrain>(CA::BriansBrain(config.getRows(), config.getColumns(), config.getCellWidth(), config.getCellHeight()));
+            running = true;
+        } break;
+        case CA::App::EXIT_MENU_ENTRY:
             return;
         break;
     }
