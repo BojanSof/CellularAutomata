@@ -1,9 +1,9 @@
 # Cellular Automata Collection
 
 Collection of cellular automata simulations.
-![Elementary cellular automaton with rule 90](https://github.com/BojanSof/CellularAutomata/blob/main/images/elementary.gif) | ![Langton's ant](https://github.com/BojanSof/CellularAutomata/blob/main/images/langton.gif)
+![Elementary cellular automaton with rule 90](https://github.com/BojanSof/CellularAutomata/blob/master/images/elementary.gif) | ![Langton's ant](https://github.com/BojanSof/CellularAutomata/blob/master/images/langton.gif)
 :-------------------------:|:-------------------------:
-![Conway's Game of Life](https://github.com/BojanSof/CellularAutomata/blob/main/images/conway.gif) | ![Brian's Brain](https://github.com/BojanSof/CellularAutomata/blob/main/images/brian.gif)
+![Conway's Game of Life](https://github.com/BojanSof/CellularAutomata/blob/master/images/conway.gif) | ![Brian's Brain](https://github.com/BojanSof/CellularAutomata/blob/master/images/brian.gif)
 
 
 # Getting Started
