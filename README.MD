@@ -10,7 +10,7 @@ Collection of cellular automata simulations.
 
 The interface allows to implement other cellular automata, based on square grid easily.
 To implement new cellular automata, inherit from the abstract class ```CA::CellularAutomaton```
-and override the ```update()``` and ```reset()``` function accordingly.
+and override the ```update()``` and ```reset()``` methods accordingly.
 Also, to get the new state of the cell, based on its neighbors, you can inherit from
 the ```CA::Rule``` class and override the methods ```getNewState()```.
 As an example, refer to the header and source files for any of the implemented automata,
