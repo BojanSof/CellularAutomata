@@ -24,6 +24,7 @@ List of implemented cellular automata:
 
 ## Prerequisites
 
+- GNU GCC Compiler with C++14 support
 - SFML 2.5.1
 
 ## Building
